@@ -11,6 +11,7 @@ const store = createStore(reducer, middleware);
 
 ReactDOM.render(
   // give Provider the store so they can stick it on context
+  // everything inside Provider has access to store now
   <Provider store={store}>
     <App />
   </Provider>,

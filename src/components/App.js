@@ -1,12 +1,29 @@
 import { useEffect } from "react";
 import { connect } from "react-redux";
 import { handleInitialData } from "../actions/shared";
+import Dashboard from "./Dashboard";
 
-const App = (props) => {
+const App = ({ dispatch, loading }) => {
   useEffect(() => {
-    props.dispatch(handleInitialData());
+    dispatch(handleInitialData());
   }, []);
-  return <div>Starter Code</div>;
+
+  return <div>{loading === true ? null : <Dashboard />}</div>;
 };
-// connect() connects the (App) to the store
-export default connect()(App);
+
+/**
+ * Using the connect() function upgrades a component to a container.
+ *
+ * mapStateToProps - If this argument is specified, the new component will subscribe to Redux store updates.
+ * This means that any time the store is updated, mapStateToProps will be called.
+ * The results of mapStateToProps must be a plain object, which will be merged into the component’s props.
+ * If you don't want to subscribe to store updates, pass null or undefined in place of mapStateToProps.
+ *
+ * Note that {authedUser} is destructured from the entire state which is passed
+ * to mapStateToProps
+ */
+const mapStateToProps = ({ authedUser }) => ({
+  loading: authedUser === null,
+});
+
+export default connect(mapStateToProps)(App);
