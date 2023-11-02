@@ -8,12 +8,10 @@ const App = ({ dispatch, loading }) => {
     dispatch(handleInitialData());
   }, []);
 
-  return <div>{loading === true ? null : <Dashboard />}</div>;
+  return <div>{loading === true ? <h1>Loading!</h1> : <Dashboard />}</div>;
 };
 
 /**
- * Using the connect() function upgrades a component to a container.
- *
  * mapStateToProps - If this argument is specified, the new component will subscribe to Redux store updates.
  * This means that any time the store is updated, mapStateToProps will be called.
  * The results of mapStateToProps must be a plain object, which will be merged into the component’s props.
@@ -26,4 +24,5 @@ const mapStateToProps = ({ authedUser }) => ({
   loading: authedUser === null,
 });
 
+// Using the connect() function upgrades a component to a container.
 export default connect(mapStateToProps)(App);

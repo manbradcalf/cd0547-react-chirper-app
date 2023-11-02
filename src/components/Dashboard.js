@@ -1,23 +1,35 @@
 import { connect } from "react-redux";
+import Tweet from "./Tweet";
+import { formatTweet } from "../utils/helpers";
 
-const Dashboard = (props) => {
+const Dashboard = ({ tweets }) => {
   return (
     <div>
       <h3 className="center">Your Timeline</h3>
       <ul className="dashboard-list">
-        {props.tweetIds.map((id) => {
-          return <li key={id}>
-            <div>TWEET ID: {id}</div>
-          </li>;
+        {tweets.map((tweet) => {
+          return (
+            <li key={tweet.id}>
+              <Tweet tweet={tweet} />
+            </li>
+          );
         })}
       </ul>
     </div>
   );
 };
 
-const mapStateToProps = ({ tweets }) => ({
-  tweetIds: Object.keys(tweets).sort(
-    (a, b) => tweets[b].timestamp - tweets[a].timestamp
+// called when the store is updated
+// because we connected it via connect(mapStateToProps)(Dashboard)
+const mapStateToProps = ({ tweets, users, authedUser }) => ({
+  tweets: Object.values(tweets).sort((a, b) => b.timestamp - a.timestamp)
+  .map((t) =>
+    formatTweet(
+      t,
+      users[t.author],
+      authedUser,
+      t.parentTweet ? t.parentTweet : null
+    )
   ),
 });
 
